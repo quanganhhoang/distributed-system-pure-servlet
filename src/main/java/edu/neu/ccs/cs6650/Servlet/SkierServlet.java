@@ -1,8 +1,13 @@
 package edu.neu.ccs.cs6650.Servlet;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,11 +56,11 @@ public class SkierServlet extends HttpServlet {
 
     res.setContentType("application/json");
     res.setCharacterEncoding("UTF-8");
-    String urlPath = req.getPathInfo();
-//    String urlPath = req.getRequestURI();
-//    String urlPath = req.getServletPath();
 
-    logger.info(urlPath);
+    String urlPath = req.getRequestURI();
+
+    logger.info(req.getRequestURI());
+
     // check we have a URL!
     if (urlPath == null || urlPath.isEmpty()) {
       res.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -64,28 +69,37 @@ public class SkierServlet extends HttpServlet {
     }
 
     String[] urlParts = urlPath.split("/");
+
     // and now validate url path and return the response status code
     // (and maybe also some value if input is valid)
 
     if (!isUrlValid(urlParts)) {
       res.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    } else {
-      res.setStatus(HttpServletResponse.SC_OK);
-      // do any sophisticated processing with urlParts which contains all the url params
-      // TODO: process url params in `urlParts`
-      String response = "{'name' : 'qa'}";
-//      String jsonString = new Gson().toJson(response);
-      PrintWriter out = res.getWriter();
-//      out.print(jsonString);
-      out.print(response);
-      out.flush();
+      return;
     }
+
+    res.setStatus(HttpServletResponse.SC_OK);
+
+    String response = "";
+
+    if (urlParts.length == 3) { // request for all resorts
+
+    } else if (urlParts.length == 5) {
+
+
+    }
+
+    PrintWriter out = res.getWriter();
+    out.print(response);
+    out.flush();
+
   }
+
 
   private boolean isUrlValid(String[] urlPath) {
     // TODO: validate the request url path according to the API spec
-    // urlPath  = "/1/seasons/2019/day/1/skier/123"
-    // urlParts = [, 1, seasons, 2019, day, 1, skier, 123]
+    if (!(urlPath.length == 3 || urlPath.length == 5)) return false;
+
     return true;
   }
 }

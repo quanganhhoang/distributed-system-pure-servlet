@@ -1,8 +1,15 @@
 package edu.neu.ccs.cs6650.Servlet;
 
+import com.google.gson.Gson;
+import edu.neu.ccs.cs6650.Model.Resort;
+import edu.neu.ccs.cs6650.Model.ResortsList;
+import edu.neu.ccs.cs6650.Model.SeasonsList;
 import java.io.IOException;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,14 +22,6 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("Duplicates")
 @WebServlet(name = "ResortServlet", urlPatterns = "/resorts")
 public class ResortServlet extends HttpServlet {
-  /*
-    /resorts [GET]
-
-    /resorts/{resortID}/seasons [GET]
-
-    /resorts/{resortID}/seasons [POST]
-      { "year": 2019 }
-   */
 
   private static final Logger logger = LogManager.getLogger(ResortServlet.class.getName());
   /*
@@ -34,29 +33,25 @@ public class ResortServlet extends HttpServlet {
   /resorts/{resortID}/seasons [POST]
     { "year": 2019 }
 
-  /skiers/{resortID}/seasons/{seasonID}/days/{dayID}/skiers/{skierID} [GET]
-
-  /skiers/{resortID}/seasons/{seasonID}/days/{dayID}/skiers/{skierID} [POST]
-    {
-      "time": 217,
-      "liftID: 21
-    }
-
-  /skiers/{skierID}/vertical [GET]
-    {
-      "resorts": [
-        {
-          "seasonID": "string",
-          "totalVert": 0
-        }
-      ]
-    }
-
    */
-  protected void doPost(HttpServletRequest request,
-      HttpServletResponse response)
+  protected void doPost(HttpServletRequest req,
+      HttpServletResponse res)
       throws ServletException, IOException {
+    res.setContentType("application/json");
+    res.setCharacterEncoding("UTF-8");
 
+    String urlPath = req.getRequestURI();
+    logger.info(req.getRequestURI());
+
+    if (urlPath == null || urlPath.isEmpty()) {
+      res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      res.getWriter().write("missing parameters");
+      return;
+    }
+
+    // TODO: persist to DB
+    res.setStatus(HttpServletResponse.SC_OK);
+    res.getWriter().write("Roger that");
   }
 
   protected void doGet(HttpServletRequest req,
@@ -65,12 +60,11 @@ public class ResortServlet extends HttpServlet {
 
     res.setContentType("application/json");
     res.setCharacterEncoding("UTF-8");
+
     String urlPath = req.getRequestURI();
 
-//    logger.info(urlPath);
-//    logger.info(req.getRequestURL());
     logger.info(req.getRequestURI());
-//    logger.info(req.getServletPath());
+
     // check we have a URL!
     if (urlPath == null || urlPath.isEmpty()) {
       res.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -79,28 +73,55 @@ public class ResortServlet extends HttpServlet {
     }
 
     String[] urlParts = urlPath.split("/");
+
     // and now validate url path and return the response status code
     // (and maybe also some value if input is valid)
 
     if (!isUrlValid(urlParts)) {
       res.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    } else {
-      res.setStatus(HttpServletResponse.SC_OK);
-      // do any sophisticated processing with urlParts which contains all the url params
-      // TODO: process url params in `urlParts`
-      String response = "{'name' : 'qa'}";
-//      String jsonString = new Gson().toJson(response);
-      PrintWriter out = res.getWriter();
-//      out.print(jsonString);
-      out.print(response);
-      out.flush();
+      return;
     }
+
+    res.setStatus(HttpServletResponse.SC_OK);
+
+    String response = "";
+
+    if (urlParts.length == 3) { // request for all resorts
+      response = retrieveAllResorts();
+    } else if (urlParts.length == 5) {
+      int resortId = Integer.valueOf(urlParts[3]);
+      response = retrieveSeasonListByResort(resortId);
+    }
+
+    PrintWriter out = res.getWriter();
+    out.print(response);
+    out.flush();
+  }
+
+  // demo method for testing returning json
+  private String retrieveAllResorts() {
+    Gson gson = new Gson();
+
+    List<Resort> dummy = new ArrayList<>();
+      dummy.add(new Resort("resort1", 1));
+      dummy.add(new Resort("resort2", 2));
+
+    ResortsList resorts = new ResortsList(dummy);
+
+    return gson.toJson(resorts);
+  }
+
+  private String retrieveSeasonListByResort(int resortId) {
+    Gson gson = new Gson();
+    SeasonsList seasons = new SeasonsList(Arrays.asList("2017", "2018", "2019"));
+
+    return gson.toJson(seasons);
   }
 
   private boolean isUrlValid(String[] urlPath) {
     // TODO: validate the request url path according to the API spec
-    // urlPath  = "/1/seasons/2019/day/1/skier/123"
-    // urlParts = [, 1, seasons, 2019, day, 1, skier, 123]
+    if (!(urlPath.length == 3 || urlPath.length == 5)) return false;
+
     return true;
   }
 }
