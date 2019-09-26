@@ -13,6 +13,7 @@
   <body>
     <h2>Hello World! This is CS 6650!</h2>
     <h1><a href="skier-api/skiers/12/seasons/2019/day/1/skier/123">test</a></h1>
+    <h1><a href="skier-api/resorts">Get resorts</a></h1>
 <%--    <p><a href="skier-api/messages">messages</a></p>--%>
   </body>
 </html>
