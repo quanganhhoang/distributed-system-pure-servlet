@@ -51,7 +51,11 @@ public class ResortServlet extends HttpServlet {
 
     // TODO: persist to DB
     res.setStatus(HttpServletResponse.SC_OK);
-    res.getWriter().write("Roger that");
+    String response = "{success: 0}";
+    PrintWriter out = res.getWriter();
+    out.print(response);
+    out.flush();
+
   }
 
   protected void doGet(HttpServletRequest req,
