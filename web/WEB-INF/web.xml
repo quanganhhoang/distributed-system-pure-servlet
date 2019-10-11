@@ -6,26 +6,21 @@
   <display-name>CS 6650 Skier API</display-name>
   <servlet>
     <servlet-name>SkierServlet</servlet-name>
-    <servlet-class>edu.neu.ccs.cs6650.Servlet.SkierServlet</servlet-class>
-<!--    <init-param>-->
-<!--      <param-name>jersey.config.server.provider.packages</param-name>-->
-<!--      <param-value>edu.neu.cs.cs6650</param-value>-->
-<!--    </init-param>-->
+    <servlet-class>edu.neu.ccs.cs6650.servlet.SkierServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ResortServlet</servlet-name>
+    <servlet-class>edu.neu.ccs.cs6650.servlet.ResortServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>SkierServlet</servlet-name>
-    <url-pattern>/skier-api/skiers/*</url-pattern>
+    <url-pattern>/skiers/*</url-pattern>
   </servlet-mapping>
-
-  <servlet>
-    <servlet-name>ResortServlet</servlet-name>
-    <servlet-class>edu.neu.ccs.cs6650.Servlet.ResortServlet</servlet-class>
-  </servlet>
 
   <servlet-mapping>
     <servlet-name>ResortServlet</servlet-name>
-    <url-pattern>/skier-api/resorts/*</url-pattern>
+    <url-pattern>/resorts/*</url-pattern>
   </servlet-mapping>
 
 </web-app>

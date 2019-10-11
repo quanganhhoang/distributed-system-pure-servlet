@@ -1,4 +1,4 @@
-package edu.neu.ccs.cs6650.Model;
+package edu.neu.ccs.cs6650.model;
 
 public class Resort {
   private String name;

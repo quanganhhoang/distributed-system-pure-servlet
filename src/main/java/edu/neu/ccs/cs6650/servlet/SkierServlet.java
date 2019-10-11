@@ -1,13 +1,8 @@
-package edu.neu.ccs.cs6650.Servlet;
-
-import com.google.gson.Gson;
+package edu.neu.ccs.cs6650.servlet;
 
 import java.io.IOException;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,7 +47,8 @@ public class SkierServlet extends HttpServlet {
     res.setCharacterEncoding("UTF-8");
 
     String urlPath = req.getRequestURI();
-    logger.info(req.getRequestURI());
+//    logger.info("servlet mapping [POST]: " + req.getHttpServletMapping());
+    logger.info("path [POST]: " + req.getRequestURI());
     logger.info("time: " + req.getParameter("time"));
 
     if (urlPath == null || urlPath.isEmpty()) {
@@ -63,10 +59,10 @@ public class SkierServlet extends HttpServlet {
 
     // TODO: persist to DB
     res.setStatus(HttpServletResponse.SC_OK);
-    String response = "{success: 0}";
-    PrintWriter out = res.getWriter();
-    out.print(response);
-    out.flush();
+//    String response = "{success: 0}";
+//    PrintWriter out = res.getWriter();
+//    out.print(response);
+//    out.flush();
   }
 
   protected void doGet(HttpServletRequest req,
@@ -77,8 +73,8 @@ public class SkierServlet extends HttpServlet {
     res.setCharacterEncoding("UTF-8");
 
     String urlPath = req.getRequestURI();
-
-    logger.info(req.getRequestURI());
+//    logger.info("servlet mapping [GET]: " + req.getHttpServletMapping());
+    logger.info("path [GET]: " + req.getRequestURI());
 
     // check we have a URL!
     if (urlPath == null || urlPath.isEmpty()) {
@@ -92,21 +88,21 @@ public class SkierServlet extends HttpServlet {
     // and now validate url path and return the response status code
     // (and maybe also some value if input is valid)
 
-    if (!isUrlValid(urlParts)) {
-      res.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      return;
-    }
+//    if (!isUrlValid(urlParts)) {
+//      res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+//      return;
+//    }
 
     res.setStatus(HttpServletResponse.SC_OK);
 
-    String response = "";
+    String response = "{message: got it}";
 
-    if (urlParts.length == 3) { // request for all resorts
-
-    } else if (urlParts.length == 5) {
-
-
-    }
+//    if (urlParts.length == 3) { // request for all resorts
+//
+//    } else if (urlParts.length == 5) {
+//
+//
+//    }
 
     PrintWriter out = res.getWriter();
     out.print(response);

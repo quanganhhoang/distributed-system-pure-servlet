@@ -1,9 +1,9 @@
-package edu.neu.ccs.cs6650.Servlet;
+package edu.neu.ccs.cs6650.servlet;
 
 import com.google.gson.Gson;
-import edu.neu.ccs.cs6650.Model.Resort;
-import edu.neu.ccs.cs6650.Model.ResortsList;
-import edu.neu.ccs.cs6650.Model.SeasonsList;
+import edu.neu.ccs.cs6650.model.Resort;
+import edu.neu.ccs.cs6650.model.ResortsList;
+import edu.neu.ccs.cs6650.model.SeasonsList;
 import java.io.IOException;
 
 import java.io.PrintWriter;
